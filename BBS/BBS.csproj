@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8C9CD0CF-B1F5-4713-9ED3-2509E5FA88A6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BBS</RootNamespace>
+    <AssemblyName>BBS</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Ltds.Wpf.Mvvm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Ltds.Wpf.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Control\ObjectExplorer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BBRZ\ActorMove.cs" />
+    <Compile Include="BBRZ\BallData.cs" />
+    <Compile Include="BBRZ\BoardActionResult.cs" />
+    <Compile Include="BBRZ\BoardState.cs" />
+    <Compile Include="BBRZ\BoardStateStatistics.cs" />
+    <Compile Include="BBRZ\CampaignSpecifics.cs" />
+    <Compile Include="BBRZ\CellTo.cs" />
+    <Compile Include="BBRZ\CoachChoices.cs" />
+    <Compile Include="BBRZ\CoachInfos.cs" />
+    <Compile Include="BBRZ\CoachResult.cs" />
+    <Compile Include="BBRZ\DiceModifier.cs" />
+    <Compile Include="BBRZ\GameInfos.cs" />
+    <Compile Include="BBRZ\Id.cs" />
+    <Compile Include="BBRZ\InducementsCategory.cs" />
+    <Compile Include="BBRZ\Location.cs" />
+    <Compile Include="BBRZ\MatchResult.cs" />
+    <Compile Include="BBRZ\MatchResultsRow.cs" />
+    <Compile Include="BBRZ\Order.cs" />
+    <Compile Include="BBRZ\PlayerData.cs" />
+    <Compile Include="BBRZ\PlayerPosition.cs" />
+    <Compile Include="BBRZ\PlayerResult.cs" />
+    <Compile Include="BBRZ\PlayerState.cs" />
+    <Compile Include="BBRZ\PlayerStateStatistics.cs" />
+    <Compile Include="BBRZ\Replay.cs" />
+    <Compile Include="BBRZ\ReplayStep.cs" />
+    <Compile Include="BBRZ\Results.cs" />
+    <Compile Include="BBRZ\RowCompetition.cs" />
+    <Compile Include="BBRZ\RowLeague.cs" />
+    <Compile Include="BBRZ\RulesEventAddInducement.cs" />
+    <Compile Include="BBRZ\RulesEventAddMercenary.cs" />
+    <Compile Include="BBRZ\RulesEventApplyInducements.cs" />
+    <Compile Include="BBRZ\RulesEventBoardAction.cs" />
+    <Compile Include="BBRZ\RulesEventCoachChoice.cs" />
+    <Compile Include="BBRZ\RulesEventEndTurn.cs" />
+    <Compile Include="BBRZ\RulesEventGameFinished.cs" />
+    <Compile Include="BBRZ\RulesEventInducementsInfos.cs" />
+    <Compile Include="BBRZ\RulesEventKickOffChoice.cs" />
+    <Compile Include="BBRZ\RulesEventKickOffTable.cs" />
+    <Compile Include="BBRZ\RulesEventSetUpAction.cs" />
+    <Compile Include="BBRZ\RulesEventSetUpConfiguration.cs" />
+    <Compile Include="BBRZ\RulesEventWaitingRequest.cs" />
+    <Compile Include="BBRZ\SetupState.cs" />
+    <Compile Include="BBRZ\SkillInfo.cs" />
+    <Compile Include="BBRZ\TeamData.cs" />
+    <Compile Include="BBRZ\TeamInducements.cs" />
+    <Compile Include="BBRZ\TeamInfo.cs" />
+    <Compile Include="BBRZ\TeamResult.cs" />
+    <Compile Include="BBRZ\TeamState.cs" />
+    <Compile Include="Control\ObjectExplorer.xaml.cs">
+      <DependentUpon>ObjectExplorer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ObjectViewModel.cs" />
+    <Compile Include="Control\ObjectViewModelHierarchy.cs" />
+    <Compile Include="BBRZConverter\BBRZ_2_CSV.cs" />
+    <Compile Include="BBRZConverter\Zipper.cs" />
+    <Compile Include="MainViewModel.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Action.cs" />
+    <Compile Include="Models\BBMatch.cs" />
+    <Compile Include="Models\BoardLocation.cs" />
+    <Compile Include="Models\Dice.cs" />
+    <Compile Include="Models\Modifier.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\PlayerStats.cs" />
+    <Compile Include="Models\Roll.cs" />
+    <Compile Include="Models\RollResult.cs" />
+    <Compile Include="Models\Skill.cs" />
+    <Compile Include="Models\SubAction.cs" />
+    <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\Turn.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Resources\Ltds.Wpf.Mvvm.dll" />
+    <Content Include="Resources\System.Windows.Interactivity.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

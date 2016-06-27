@@ -1,0 +1,28 @@
+﻿<Window x:Class="BBS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cc="clr-namespace:BBS.Control"
+        xmlns:local="clr-namespace:BBS"
+        mc:Ignorable="d"
+        Title="Blood Bowl 2 Replay's inspector" Height="350" Width="525">
+    <DockPanel LastChildFill="True">
+        <Border DockPanel.Dock="Left" BorderBrush="Orange" BorderThickness="1.5" Padding="2">
+        <DockPanel LastChildFill="True" MinWidth="100">
+            <DockPanel DockPanel.Dock="Top" Margin="2">
+                <Button DockPanel.Dock="Left" Content="Open" HorizontalAlignment="Left" Command="{Binding OpenFileCommand}"/>
+            </DockPanel>
+                <ListBox ItemsSource="{Binding Replays}" SelectedItem="{Binding SelectedReplay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+        </Border>
+        <cc:ObjectExplorer Source="{Binding SelectedReplay}"/>
+    </DockPanel>
+   
+</Window>

@@ -98,7 +98,7 @@ namespace BBS
                     try
                     {
                         replay = Replay.CreateFromString(data);
-                        BBRZ_2_CSV.Write2Csv(replay, file);
+                        //BBRZ_2_CSV.Transform(replay, file);
                         _replays.Add(new BBMatch(replay));
                     }
                     catch (Exception ex)

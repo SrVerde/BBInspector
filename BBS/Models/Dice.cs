@@ -43,6 +43,6 @@ namespace BBS.Models
         Stumble = 3,
         Pow = 4,
         unknown5 = 5,
-        unknown6 = 6
+        unknown6 = 6 
     }
 }

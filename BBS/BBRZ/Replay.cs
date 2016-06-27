@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace BBS.BBRZ
 {
-	[Serializable]
-	public class Replay
-	{
-		static XmlSerializer _serializer = null;
-		public string ClientVersion { get; set; }
-	
+    [Serializable]
+    public class Replay
+    {
+        static XmlSerializer _serializer = null;
+        public string ClientVersion { get; set; }
+
 
         public Replay()
         {
@@ -36,11 +36,18 @@ namespace BBS.BBRZ
             return r;
         }
 
-       
+        /// <summary>
+        /// all not null steps
+        /// </summary>
+        /// <returns></returns>
+        internal IEnumerable<ReplayStep> ValidSteps()
+        {
+            return this.ReplayStep.Where(rp => rp.RulesEventBoardAction != null);
+        }
 
         public ReplayStep FirstStep
         {
-            get { return ReplayStep.First();}
+            get { return ReplayStep.First(); }
         }
 
         public ReplayStep LastStep

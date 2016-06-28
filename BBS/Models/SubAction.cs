@@ -39,7 +39,7 @@ namespace BBS.Models
         {
             get
             {
-                throw new NotImplementedException();
+                return Rolls[0].GetChances(Player,TargetPlayer);
             }
           
         }

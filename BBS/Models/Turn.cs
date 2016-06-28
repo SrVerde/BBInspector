@@ -58,7 +58,7 @@ namespace BBS.Models
 
                 Player targetPlayer = SearchPlayer(step.BoardState, targetPlayerId);
 
-                action.AddSubActions((ActionType)ba.ActionType, ba.Results.BoardActionResult);
+                action.AddSubActions((ActionType)ba.ActionType, ba.Results.BoardActionResult, targetPlayer);
             }
         }
 

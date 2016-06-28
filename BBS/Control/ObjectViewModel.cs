@@ -135,7 +135,7 @@ namespace BBS.Control
                 var value = string.Empty;
                 if (_object != null)
                 {
-                    if (IsPrintableType(_type))
+                    if (!_type.IsAssignableFrom(typeof(IEnumerable)))
                     {
                         value = _object.ToString();
                     }

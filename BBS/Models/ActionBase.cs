@@ -10,7 +10,7 @@ namespace BBS.Models
     {
         public ActionBase(Player player)
         {
-
+            this.Player = player;
         }
 
 
@@ -35,5 +35,9 @@ namespace BBS.Models
             get;
         }
 
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

@@ -239,62 +239,69 @@ namespace BBS.Models
         {
             RollResult result = new RollResult();
 
-            switch (Type)
+            try
             {
-                case (RollType.FollowUp):
-                case (RollType.Move):
-                case (RollType.PilingOn):
-                case (RollType.Push):
-                case (RollType.TouchBack):
-                    result.Succees = 1.0;
-                    break;
-                case (RollType.ArmourRoll):
-                    if (targetPlayer.Id == currentPlayer.Id)
-                    {
-                        result.Succees = GetRoll2DRisk();
-                        result.Failure = GetRoll2DChance();
-                        result.AttackerStunned = result.Failure;
-                    }
-                    else
-                    {
+                switch (Type)
+                {
+                    case (RollType.FollowUp):
+                    case (RollType.Move):
+                    case (RollType.PilingOn):
+                    case (RollType.Push):
+                    case (RollType.TouchBack):
+                        result.Succees = 1.0;
+                        break;
+                    case (RollType.ArmourRoll):
+                        if (targetPlayer.Id == currentPlayer.Id)
+                        {
+                            result.Succees = GetRoll2DRisk();
+                            result.Failure = GetRoll2DChance();
+                            result.AttackerStunned = result.Failure;
+                        }
+                        else
+                        {
+                            result.Succees = GetRoll2DChance();
+                            result.Failure = GetRoll2DRisk();
+                            result.DefenderStunned = result.Succees;
+                        }
+                        break;
+                    case (RollType.InjuryRoll):
+                    case (RollType.ShadowRoll):
+                    case (RollType.StabRoll):
                         result.Succees = GetRoll2DChance();
-                        result.Failure = GetRoll2DRisk();
-                        result.DefenderStunned = result.Succees;
-                    }
-                    break;
-                case (RollType.InjuryRoll):
-                case (RollType.ShadowRoll):
-                case (RollType.StabRoll):
-                    result.Succees = GetRoll2DChance();
-                    break;
-                case (RollType.BoneheadRoll):
-                case (RollType.LonerRoll):
-                case (RollType.ReallyStupidRoll):
-                case (RollType.WakeUpFromKORoll):
-                case (RollType.WildAnimalRoll):
-                    result.Succees = GetRoll1DChance();
-                    break;
-                case (RollType.CatchRoll):
-                case (RollType.DodgeRoll):
-                case (RollType.GoForItRoll):
-                case (RollType.InterceptionRoll):
-                case (RollType.LeapRoll):
-                case (RollType.PassRoll):
-                case (RollType.PickUpRoll):
-                    result.Succees = GetRoll1DChance();
-                    result.Failure = GetRoll1DRisk();
-                    break;
-                case (RollType.BlockRoll):
-                    result.Succees = GetBlockChance(currentPlayer, targetPlayer);
-                    result.Failure = GetBlockRisk(currentPlayer);
-                    break;
-                case (RollType.BounceBallRoll):
-                case (RollType.ScatterBallRoll):
-                case (RollType.InaccuratePassRoll):
-                case (RollType.CasualtyRoll):
-                    break;
-                default:
-                    break;
+                        break;
+                    case (RollType.BoneheadRoll):
+                    case (RollType.LonerRoll):
+                    case (RollType.ReallyStupidRoll):
+                    case (RollType.WakeUpFromKORoll):
+                    case (RollType.WildAnimalRoll):
+                        result.Succees = GetRoll1DChance();
+                        break;
+                    case (RollType.CatchRoll):
+                    case (RollType.DodgeRoll):
+                    case (RollType.GoForItRoll):
+                    case (RollType.InterceptionRoll):
+                    case (RollType.LeapRoll):
+                    case (RollType.PassRoll):
+                    case (RollType.PickUpRoll):
+                        result.Succees = GetRoll1DChance();
+                        result.Failure = GetRoll1DRisk();
+                        break;
+                    case (RollType.BlockRoll):
+                        result.Succees = GetBlockChance(currentPlayer, targetPlayer);
+                        result.Failure = GetBlockRisk(currentPlayer);
+                        break;
+                    case (RollType.BounceBallRoll):
+                    case (RollType.ScatterBallRoll):
+                    case (RollType.InaccuratePassRoll):
+                    case (RollType.CasualtyRoll):
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch 
+            {
+                // empty result on error
             }
 
             return result;

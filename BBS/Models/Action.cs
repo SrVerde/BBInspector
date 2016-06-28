@@ -60,7 +60,7 @@ namespace BBS.Models
         {
             get
             {
-                throw new NotImplementedException();
+                return new RollResult();
             }
         }
 
@@ -76,10 +76,13 @@ namespace BBS.Models
 
         internal void AddSubActions(ActionType subActionType, List<BoardActionResult> boardActionResult, Player targetPlayer = null)
         {
-            var sa = new SubAction(subActionType, targetPlayer);
+
+            var sa = new SubAction(subActionType, Player, targetPlayer);
 
             foreach (BoardActionResult bar in boardActionResult)
             {
+                
+
                 List<Modifier> thisRollModifiers = new List<Modifier>();
                 foreach (DiceModifier dm in bar.ListModifiers)
                 {
@@ -90,7 +93,10 @@ namespace BBS.Models
                 Roll roll = new Roll(bar.CoachChoices.ListDices, bar.Requirement, bar.RollType, thisRollModifiers);
 
                 sa.AddRoll(roll);
-            }            
+
+              
+            }
+
             this.SubActions.Add(sa);
         }
         

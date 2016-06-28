@@ -8,26 +8,24 @@ using BBS.BBRZ;
 
 namespace BBS.Models
 {
-    public class Action
+    public class Action: ActionBase
     {
         /// <summary>
         /// Action constructor
         /// </summary>
         /// <param name="player">The player performing the action</param>
         public Action(Player player)
+            :base(player)
         {
             Player = player;
             SubActions = new List<SubAction>();
         }
 
-        /// <summary>
-        /// The player performing the action
-        /// </summary>
-        public Player Player { get; protected set;}
+       
         /// <summary>
         /// The action being performed
         /// </summary>
-        public ActionType Type
+        public override  ActionType Type
         {
             get { return CalculateActionType(); }
         }
@@ -56,6 +54,14 @@ namespace BBS.Models
             }
 
             return current;
+        }
+
+        public override RollResult RollResult
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public List<SubAction> SubActions
@@ -88,37 +94,8 @@ namespace BBS.Models
             this.SubActions.Add(sa);
         }
         
-        public double SucceedChance
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+       
 
-        public double AttackerDownChance
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
-
-        public double DefenderDownChance
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
-
-        public double DefenderPushChance
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
     }
 
     public enum ActionType

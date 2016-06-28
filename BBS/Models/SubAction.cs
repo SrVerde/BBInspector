@@ -6,30 +6,25 @@ using System.Threading.Tasks;
 
 namespace BBS.Models
 {
-    public class SubAction
+    public class SubAction : ActionBase
     {
+        ActionType _actionType;
+
         public SubAction(ActionType subActionType, Player player, Player targetPlayer = null)
+            : base(player)
         {
-            Type = subActionType;
-            Player = player;
+            _actionType = subActionType;
             TargetPlayer = targetPlayer;
             Rolls = new List<Roll>();
         }
 
-        public SubAction() : base()
+        public override ActionType Type
         {
-        }
-
-        public ActionType Type
-        {
-            get; private set;
+            get { return _actionType; }
 
         }
 
-        /// <summary>
-        /// The player performing the action
-        /// </summary>
-        public Player Player { get; protected set; }
+
         /// <summary>
         /// The player target of the action 
         /// </summary>
@@ -40,7 +35,16 @@ namespace BBS.Models
             get; private set;
         }
 
-        public RollResult Rollresult { get; protected set; }
+        public override RollResult RollResult
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+          
+        }
+
+       
 
         internal void AddRoll(Roll roll)
         {

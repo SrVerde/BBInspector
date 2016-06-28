@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Action.cs" />
+    <Compile Include="Models\ActionBase.cs" />
     <Compile Include="Models\BBMatch.cs" />
     <Compile Include="Models\BoardLocation.cs" />
     <Compile Include="Models\Dice.cs" />

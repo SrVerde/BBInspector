@@ -10,6 +10,7 @@ namespace BBS.Models
     /// </summary>
     public class Roll
     {
+        #region Constructors
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -172,7 +173,9 @@ namespace BBS.Models
                     break;
             }
         }
+        #endregion
 
+        #region Private properties and constants
         /// <summary>
         /// Block dice can be negative (red" dice)
         /// </summary>
@@ -189,7 +192,9 @@ namespace BBS.Models
         /// Number of doubles results in 2D6 when rolling equal or higher than the array index
         /// </summary>
         private static int[] numDoubles2D6 = new int[] { 6, 6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0 };
+        #endregion
 
+        #region Public properties
         /// <summary>
         /// Initial target number for success
         /// </summary>
@@ -214,7 +219,9 @@ namespace BBS.Models
         /// Roll type
         /// </summary>
         public RollType Type { get; protected set; }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Select a single roll from the rolled dice (usualyy block dice)
         /// </summary>
@@ -235,10 +242,19 @@ namespace BBS.Models
             isRedDice = isNegative;
         }
 
-        public RollResult GetChances(Player currentPlayer, Player targetPlayer, bool canUseReroll = false, bool isFirstFrenzyHit = true)
+        /// <summary>
+        /// The main entry point to calculate probabilities
+        /// </summary>
+        /// <param name="currentPlayer">Current player comiiting the action</param>
+        /// <param name="targetPlayer">Target player of the action</param>
+        /// <param name="isFirstFrenzyHit">TRUE if this is the first hit of a frenzy player</param>
+        /// <returns>Chances of success and failure</returns>
+        public SingleRollChance GetChances(Player currentPlayer, Player targetPlayer, bool isFirstFrenzyHit = true)
         {
-            RollResult result = new RollResult();
+            SingleRollChance chance = new SingleRollChance();
 
+            //  I do not know why we need a try / catch if we have a switch default
+            //
             try
             {
                 switch (Type)
@@ -248,63 +264,148 @@ namespace BBS.Models
                     case (RollType.PilingOn):
                     case (RollType.Push):
                     case (RollType.TouchBack):
-                        result.Succees = 1.0;
-                        break;
-                    case (RollType.ArmourRoll):
-                        if (targetPlayer.Id == currentPlayer.Id)
-                        {
-                            result.Succees = GetRoll2DRisk();
-                            result.Failure = GetRoll2DChance();
-                            result.AttackerStunned = result.Failure;
-                        }
-                        else
-                        {
-                            result.Succees = GetRoll2DChance();
-                            result.Failure = GetRoll2DRisk();
-                            result.DefenderStunned = result.Succees;
-                        }
-                        break;
-                    case (RollType.InjuryRoll):
-                    case (RollType.ShadowRoll):
-                    case (RollType.StabRoll):
-                        result.Succees = GetRoll2DChance();
-                        break;
-                    case (RollType.BoneheadRoll):
-                    case (RollType.LonerRoll):
-                    case (RollType.ReallyStupidRoll):
-                    case (RollType.WakeUpFromKORoll):
-                    case (RollType.WildAnimalRoll):
-                        result.Succees = GetRoll1DChance();
-                        break;
-                    case (RollType.CatchRoll):
-                    case (RollType.DodgeRoll):
-                    case (RollType.GoForItRoll):
-                    case (RollType.InterceptionRoll):
-                    case (RollType.LeapRoll):
-                    case (RollType.PassRoll):
-                    case (RollType.PickUpRoll):
-                        result.Succees = GetRoll1DChance();
-                        result.Failure = GetRoll1DRisk();
-                        break;
-                    case (RollType.BlockRoll):
-                        result.Succees = GetBlockChance(currentPlayer, targetPlayer);
-                        result.Failure = GetBlockRisk(currentPlayer);
-                        break;
                     case (RollType.BounceBallRoll):
                     case (RollType.ScatterBallRoll):
                     case (RollType.InaccuratePassRoll):
                     case (RollType.CasualtyRoll):
+                        chance.Success = 1.0;
+                        chance.Failure = 0.0;
+                        break;
+                    case (RollType.ArmourRoll):
+                        if (targetPlayer.Id == currentPlayer.Id)
+                        {
+                            //  Hitting against our own:
+                            //  Failing the roll is considered a success, while passing it is a failure
+                            //  
+                            chance.Success = GetRoll2DRisk();
+                            chance.Failure = 1.0 - chance.Success;
+                        }
+                        else
+                        {
+                            //  There is no risk in failing a roll against some else's armour
+                            //
+                            chance.Success = GetRoll2DChance();
+                            chance.Failure = 0.0;
+                        }
+                        break;
+                    case (RollType.InjuryRoll):
+                        //  The target number is the required to get the target player out of the pitch
+                        //  there is no risk in failing an injury roll
+                        //
+                        InitialTargetNumber = 8;
+                        FinalTargetNumber = targetPlayer.Skills.Contains(SkillEnum.ThickSkull) ?
+                                            InitialTargetNumber + 1 :
+                                            InitialTargetNumber;
+                        if (targetPlayer.Skills.Contains(SkillEnum.Stunty))
+                            FinalTargetNumber--;
+                        chance.Success = GetRoll2DChance();
+                        chance.Failure = 0.0;
+                        break;
+                    case (RollType.ShadowRoll):
+                    case (RollType.StabRoll):
+                        //  Shadowing and stabbing have no risk of failing
+                        //
+                        chance.Success = GetRoll2DChance();
+                        chance.Failure = 0.0;
+                        break;
+                    case (RollType.BoneheadRoll):
+                    case (RollType.ReallyStupidRoll):
+                    case (RollType.WakeUpFromKORoll):
+                    case (RollType.WildAnimalRoll):
+                        //  Failing this is quite bitching, but not considered a failure
+                        //
+                        chance.Success = GetRoll1DChance();
+                        chance.Failure = 0.0;
+                        break;
+                    case (RollType.InterceptionRoll):
+                        //  A success is considered if the interception roll is failed
+                        //
+                        chance.Success = GetRoll1DRisk();
+                        chance.Failure = 1.0 - chance.Success;
+                        break;
+                    case (RollType.LeapRoll):
+                    case (RollType.CatchRoll):
+                    case (RollType.DodgeRoll):
+                    case (RollType.GoForItRoll):
+                    case (RollType.PassRoll):
+                    case (RollType.PickUpRoll):
+                        chance.Success = GetRoll1DChance();
+                        chance.Failure = 1.0 - chance.Success;
+                        break;
+                    case (RollType.LonerRoll): // loner effects are considered separatedy
+                    case (RollType.ProRoll): // pro effects are considered separatedly
+                        chance.Success = GetRoll1DChance();
+                        chance.Failure = 0.0;
+                        break;
+                    case (RollType.BlockRoll):
+                        chance.Success = GetBlockChance(currentPlayer, targetPlayer);
+                        chance.Failure = GetBlockRisk(currentPlayer);
                         break;
                     default:
                         break;
                 }
             }
-            catch 
+            catch
             {
                 // empty result on error
             }
 
-            return result;
+            return chance;
+        }
+
+        /// <summary>
+        /// Check if player has the skill for the performing roll
+        /// </summary>
+        /// <param name="currentPlayer">Player rolling</param>
+        /// <returns>TRUE if the player thas the right skill for the roll</returns>
+        public bool PlayerHasTheRightSkill(Player currentPlayer)
+        {
+            bool hasSkill = false;
+
+            switch (Type)
+            {
+                case (RollType.ArmourRoll):
+                case (RollType.BlockRoll):
+                case (RollType.BoneheadRoll):
+                case (RollType.BounceBallRoll):
+                case (RollType.CasualtyRoll):
+                case (RollType.FollowUp):
+                case (RollType.InaccuratePassRoll):
+                case (RollType.InjuryRoll):
+                case (RollType.InterceptionRoll):
+                case (RollType.LeapRoll):
+                case (RollType.LonerRoll):
+                case (RollType.Move):
+                case (RollType.PilingOn):
+                case (RollType.Push):
+                case (RollType.ReallyStupidRoll):
+                case (RollType.ScatterBallRoll):
+                case (RollType.ShadowRoll):
+                case (RollType.StabRoll):
+                case (RollType.TouchBack):
+                case (RollType.WakeUpFromKORoll):
+                case (RollType.WildAnimalRoll):
+                    break;
+                case (RollType.CatchRoll):
+                    hasSkill = currentPlayer.Skills.Contains(SkillEnum.Catch); 
+                    break;
+                case (RollType.DodgeRoll):
+                    hasSkill = currentPlayer.Skills.Contains(SkillEnum.Dodge);
+                    break;
+                case (RollType.GoForItRoll):
+                    hasSkill = currentPlayer.Skills.Contains(SkillEnum.SureFeet);
+                    break;
+                case (RollType.PassRoll):
+                    hasSkill = currentPlayer.Skills.Contains(SkillEnum.Pass);
+                    break;
+                case (RollType.PickUpRoll):
+                    hasSkill = currentPlayer.Skills.Contains(SkillEnum.SureHands);
+                    break;
+                default:
+                    break;
+            }
+
+            return hasSkill;
         }
 
         /// <summary>
@@ -326,13 +427,12 @@ namespace BBS.Models
         /// <summary>
         /// Get the probability of succeding in a D6 roll (rolling equal or higher than desired)
         /// </summary>
-        /// <param name="canSpareReRoll">TRUE if a skill reroll is available</param>
         /// <returns>Probability in succeding in a D6 roll from 0.0 to 1.0</returns>
-        private double GetRoll1DChance(bool hasSkillReRoll = true)
+        private double GetRoll1DChance()
         {
             //  The probability of success is the complementary of the probability of failure
             //
-            return 1.0 - GetRoll1DRisk(hasSkillReRoll);
+            return 1.0 - GetRoll1DRisk();
         }
 
         /// <summary>
@@ -340,10 +440,9 @@ namespace BBS.Models
         /// </summary>
         /// <param name="blocker">Attacking player</param>
         /// <param name="defender">Defending player</param>
-        /// <param name="canUseReroll">TRUE if a re roll can be used</param>
         /// <param name="isFirstFrenzyHit">TRUE if this is the first attack of a frenzy player</param>
         /// <returns>Probability in succeeding</returns>
-        private double GetBlockChance(Player blocker, Player defender, bool canUseReroll = false, bool isFirstFrenzyHit = true)
+        private double GetBlockChance(Player blocker, Player defender, bool isFirstFrenzyHit = true)
         {
             bool bothDownWorks = false;
             bool stumbleWorks = true;
@@ -371,28 +470,18 @@ namespace BBS.Models
             //  Chances are valid combinations divided by total combinations
             //  As a curiosity, if 0 dice are rolled, chances to succeed are 100.0 %
             //
-            double chance = (isRedDice) ?
-                             Math.Pow(numValidResults, Dices.Count) / numTotalCombinations :
-                            (1.0 - Math.Pow(6 - numValidResults, Dices.Count) / numTotalCombinations);
-
-            //  Increase probability if a reroll can be spared in this
-            //
-            if (canUseReroll)
-                chance += (1.0 - chance) * chance;
-
-            return chance;
+            return (isRedDice) ?
+                    Math.Pow(numValidResults, Dices.Count) / numTotalCombinations :
+                   (1.0 - Math.Pow(6 - numValidResults, Dices.Count) / numTotalCombinations);
         }
 
         /// <summary>
         /// Get the risk of rolling two D6 and adding up (rolling lower than desired)
         /// </summary>
-        /// <param name="canSpareReRoll">TRUE if a reroll (either team or skill) can be spared</param>
         /// <returns>Probability of failing the roll from 0.0 to 1.0</returns>        
-        private double GetRoll2DRisk(bool canSpareReRoll = false)
+        private double GetRoll2DRisk()
         {
-            double chances = 1.0 - GetRoll2DChance();
-
-            return ((canSpareReRoll) ? chances * chances : chances);
+            return 1.0 - GetRoll2DChance();
         }
 
         /// <summary>
@@ -417,22 +506,18 @@ namespace BBS.Models
         /// <summary>
         /// Get the risk of rolling one D6 (rolling lower than desired) and producing a turnover
         /// </summary>
-        /// <param name="canSpareReRoll">TRUE if a reroll (either team or skill) can be spared</param>
         /// <returns>Probability of failing the roll (most probably causing a turnover) from 0.0 to 1.0</returns>
-        private double GetRoll1DRisk(bool canSpareReRoll = true)
+        private double GetRoll1DRisk()
         {
-            double chances = FinalTargetNumber / 6.0;
-
-            return ((canSpareReRoll) ? chances * chances : chances);
+            return FinalTargetNumber / 6.0;
         }
 
         /// <summary>
         /// Calculate the chance to cause a turnover in a block roll
         /// </summary>
         /// <param name="blocker">Attacking player</param>
-        /// <param name="canUseReroll">TRUE if a re roll can be used</param>
         /// <returns>Probability in failing</returns>
-        private double GetBlockRisk(Player blocker, bool canUseReroll = false)
+        private double GetBlockRisk(Player blocker)
         {
             bool bothDownkWorks = IsBothDownValid(blocker);
 
@@ -450,13 +535,9 @@ namespace BBS.Models
             //  Chances are valid combinations divided by total combinations
             //  As a curiosity, if 0 dice are rolled, chances to get a turnover are 0.0 %
             //
-            double chances = !(isRedDice) ?
-                             Math.Pow(numInvalidResults, Dices.Count) / numTotalCombinations :
-                             (1.0 - Math.Pow(6 - numInvalidResults, Dices.Count) / numTotalCombinations);
-
-            //  If a re-roll can be spared, then the risk is calculated by failing two consecutive times
-            //
-            return (canUseReroll) ? chances * chances : chances;
+            return (!isRedDice) ?
+                     Math.Pow(numInvalidResults, Dices.Count) / numTotalCombinations :
+                    (1.0 - Math.Pow(6 - numInvalidResults, Dices.Count) / numTotalCombinations);
         }
 
         /// <summary>
@@ -640,7 +721,7 @@ namespace BBS.Models
         /// Get if rolled 2D6 was successful
         /// </summary>
         /// <returns>TRUE if roll was succesful</returns>
-        private bool IsRoll2DSuccessful(int roll, int target)
+        private bool IsRoll2DSuccessful()
         {
             return (Result >= FinalTargetNumber);
         }
@@ -700,10 +781,11 @@ namespace BBS.Models
                     String.Format("{0} {1} : {2}", type, targetNumber, result) :
                     String.Format("{0} : {1}", type, result);
         }
+        #endregion
     }
     
     /// <summary>
-    /// There are many roll types in Blood bowl!
+    /// There are many roll types in Blood Bowl!
     /// </summary>
     public enum RollType
     {
@@ -768,7 +850,7 @@ namespace BBS.Models
         /// <summary>
         /// Roll to intercept an ongoing pass
         /// </summary>
-        InterceptionRoll = 16, // ??
+        InterceptionRoll = 16, 
         /// <summary>
         /// Roll to wake up from KO
         /// </summary>           
@@ -849,19 +931,25 @@ namespace BBS.Models
         /// Bouncing ball should be 1D8
         /// Scattered ball is 1D8 & 1D6
         /// Inaccurate pass is 3D8
+        /// Return from the side line is 3D6
         /// </summary>
         ScatterBallRoll = 110,
         InaccuratePassRoll = 210,
+        ReturnFromSideLineRoll = 310,
         /// <summary>
         /// Casualty rolls and apotecray rolls seems to be the same in the BBRZ files
         /// Distinction between these two is made through the rolled dice
         /// </summary>
         ApothecaryRoll = 104,
+        /// <summary>
+        /// TODO: find pro roll id number
+        /// </summary>
+        ProRoll = 375,
     }
 
     public enum CasualtyRoll
     {
-        BadlyHurt = 38,
+        BadlyHurt = 38, // or lower
 
         unknown39 = 39,
         unknown40 = 40,
@@ -890,7 +978,7 @@ namespace BBS.Models
         unknown59 = 59,
         unknown60 = 60,
 
-        Dead = 61
+        Dead = 61 // or higher
     }
 
     public enum CasualtyEffect

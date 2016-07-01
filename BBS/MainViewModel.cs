@@ -1,19 +1,14 @@
-﻿using BBS.BBRZ;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
+using System.Windows.Input;
+using BBS.BBRZ;
 using BBS.Converter;
 using BBS.Models;
 using Ltds.Wpf.Mvvm.Commands;
 using Ltds.Wpf.Mvvm.ViewModels;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace BBS
 {
@@ -98,7 +93,7 @@ namespace BBS
                     try
                     {
                         replay = Replay.CreateFromString(data);
-                        //BBRZ_2_CSV.Transform(replay, file);
+                        BBRZ_2_CSV.Write2Csv(replay, file);
                         _replays.Add(new BBMatch(replay));
                     }
                     catch (Exception ex)

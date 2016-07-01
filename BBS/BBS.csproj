@@ -147,11 +147,9 @@
     <Compile Include="Models\BBMatch.cs" />
     <Compile Include="Models\BoardLocation.cs" />
     <Compile Include="Models\Dice.cs" />
-    <Compile Include="Models\Luck.cs" />
     <Compile Include="Models\Modifier.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerStats.cs" />
-    <Compile Include="Models\Risk.cs" />
     <Compile Include="Models\Roll.cs" />
     <Compile Include="Models\RollResult.cs" />
     <Compile Include="Models\Skill.cs" />

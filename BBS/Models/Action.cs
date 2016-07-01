@@ -1,34 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BBS.BBRZ;
 
 
 namespace BBS.Models
 {
-    public class Action: ActionBase
+    /// <summary>
+    /// An action is a goup of subactions performed by a player
+    /// The action is defined in the BBRZ file since the player is selected until another player is selected
+    /// </summary>
+    public class Action : ActionBase<ActionChance>
     {
         /// <summary>
         /// Action constructor
         /// </summary>
         /// <param name="player">The player performing the action</param>
-        public Action(Player player)
-            :base(player)
+        public Action(Player player) : base(player)
         {
             Player = player;
             SubActions = new List<SubAction>();
         }
 
-       
         /// <summary>
         /// The action being performed
         /// </summary>
-        public override  ActionType Type
-        {
-            get { return CalculateActionType(); }
-        }
+        public override ActionType Type { get { return CalculateActionType(); } }
 
         private ActionType CalculateActionType()
         {
@@ -56,13 +53,7 @@ namespace BBS.Models
             return current;
         }
 
-        public override RollResult RollResult
-        {
-            get
-            {
-                return new RollResult();
-            }
-        }
+        public override ActionChance Chances { get; }
 
         public List<SubAction> SubActions
         {
@@ -76,13 +67,10 @@ namespace BBS.Models
 
         internal void AddSubActions(ActionType subActionType, List<BoardActionResult> boardActionResult, Player targetPlayer = null)
         {
-
             var sa = new SubAction(subActionType, Player, targetPlayer);
 
             foreach (BoardActionResult bar in boardActionResult)
             {
-                
-
                 List<Modifier> thisRollModifiers = new List<Modifier>();
                 foreach (DiceModifier dm in bar.ListModifiers)
                 {
@@ -93,15 +81,9 @@ namespace BBS.Models
                 Roll roll = new Roll(bar.CoachChoices.ListDices, bar.Requirement, bar.RollType, thisRollModifiers);
 
                 sa.AddRoll(roll);
-
-              
-            }
-
+            }            
             this.SubActions.Add(sa);
         }
-        
-       
-
     }
 
     public enum ActionType

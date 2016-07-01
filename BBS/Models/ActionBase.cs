@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace BBS.Models
 {
-    public abstract class ActionBase
+    public abstract class ActionBase<T> where T: Chance
     {
         public ActionBase(Player player)
         {
-            this.Player = player;
+            Player = player;
         }
-
 
         /// <summary>
         /// The player performing the action
@@ -21,19 +20,12 @@ namespace BBS.Models
         /// <summary>
         /// The action being performed
         /// </summary>
-        public abstract ActionType Type
-        {
-            get;
-        }
-
+        public abstract ActionType Type { get; }
 
         /// <summary>
         /// Probabilities of the action 
         /// </summary>
-        public abstract RollResult RollResult
-        {
-            get;
-        }
+        public abstract T Chances { get; }
 
         public override string ToString()
         {

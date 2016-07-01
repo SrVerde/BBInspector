@@ -10,6 +10,11 @@ namespace BBS.BBRZ
 		public CellTo ()
 		{
 		}
-	}
+
+        public override string ToString()
+        {
+            return Cell.ToString();
+        }
+    }
 }
 

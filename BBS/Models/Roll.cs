@@ -8,7 +8,7 @@ namespace BBS.Models
     /// A single roll in the game
     /// Basic object for statistical luck / chance calculations
     /// </summary>
-    public class Roll
+    public class Roll : IRollInfo
     {
         #region Constructors
         /// <summary>

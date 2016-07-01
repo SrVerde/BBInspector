@@ -35,27 +35,32 @@ namespace BBS.Models
         {
             int targetPlayerId = -1;
             Dictionary<string, int> positionsMap = CreatePositionsMap(step);
-
+            Action action = null;
             foreach (RulesEventBoardAction ba in step.RulesEventBoardAction)
             {
-                Action action = null;
+                ActionType ac = (ActionType)ba.ActionType;
+              
                 Player player = SearchPlayer(step.BoardState, ba.PlayerId);
 
-                if (!Actions.Exists(a => a.Player.Id == player.Id))
+                if (ac == ActionType.SelectPlayer)
                 {
                     action = new Action(player);
                     this.Actions.Add(action);
                 }
                 else
                 {
-                    action = Actions.Find(a => a.Player.Id == player.Id);
+                    //there is an action that involves a player.
+                    if (action != null)
+                    {
+                        positionsMap.TryGetValue(ba.Order.CellTo.Cell.ToString(), out targetPlayerId);
+
+                        Player targetPlayer = SearchPlayer(step.BoardState, targetPlayerId);
+
+
+                        action.AddSubActions((ActionType)ba.ActionType, ba.Results.BoardActionResult, targetPlayer);
+                    }
                 }
-                
-                positionsMap.TryGetValue(ba.Order.CellTo.Cell.ToString(), out targetPlayerId);
-
-                Player targetPlayer = SearchPlayer(step.BoardState, targetPlayerId);
-
-                action.AddSubActions((ActionType)ba.ActionType, ba.Results.BoardActionResult, targetPlayer);
+               
             }
         }
 
@@ -96,6 +101,8 @@ namespace BBS.Models
 
             return positionsMap;
         }
+
+
 
         public override string ToString()
         {

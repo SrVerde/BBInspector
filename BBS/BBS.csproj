@@ -68,7 +68,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Control\ObjectExplorer.xaml">
+    <Page Include="Control\ObjectExplorer\ObjectExplorer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\TeamView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\TurnView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,13 +136,19 @@
     <Compile Include="BBRZ\TeamInfo.cs" />
     <Compile Include="BBRZ\TeamResult.cs" />
     <Compile Include="BBRZ\TeamState.cs" />
-    <Compile Include="Control\ObjectExplorer.xaml.cs">
+    <Compile Include="Control\ObjectExplorer\ObjectExplorer.xaml.cs">
       <DependentUpon>ObjectExplorer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\ObjectViewModel.cs" />
-    <Compile Include="Control\ObjectViewModelHierarchy.cs" />
+    <Compile Include="Control\ObjectExplorer\ObjectViewModel.cs" />
+    <Compile Include="Control\ObjectExplorer\ObjectViewModelHierarchy.cs" />
     <Compile Include="BBRZConverter\BBRZ_2_CSV.cs" />
     <Compile Include="BBRZConverter\Zipper.cs" />
+    <Compile Include="Control\TeamView.xaml.cs">
+      <DependentUpon>TeamView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TurnView.xaml.cs">
+      <DependentUpon>TurnView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -147,6 +161,7 @@
     <Compile Include="Models\BBMatch.cs" />
     <Compile Include="Models\BoardLocation.cs" />
     <Compile Include="Models\Dice.cs" />
+    <Compile Include="Models\IRollInfo.cs" />
     <Compile Include="Models\Modifier.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerStats.cs" />

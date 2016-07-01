@@ -54,7 +54,20 @@ namespace BBS.Models
 
                 current.AddActions(rp);
             }
+        }
 
+        /// <summary>
+        /// Gets all rolls for a team.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IRollInfo> GetAllRolls()
+        {
+            foreach (var t in Turns)
+            {
+                foreach (var ac in t.Actions)
+                    foreach (var r in ac.GetAllRolls())
+                        yield return r;
+            }
         }
     }
 

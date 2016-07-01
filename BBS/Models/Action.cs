@@ -84,6 +84,14 @@ namespace BBS.Models
             }            
             this.SubActions.Add(sa);
         }
+
+
+        public IEnumerable<IRollInfo> GetAllRolls()
+        {
+            foreach (var sa in SubActions)
+                foreach (var r in sa.Rolls)
+                    yield return r;
+        }
     }
 
       

@@ -22,7 +22,20 @@
             </ListBox>
         </DockPanel>
         </Border>
-        <cc:ObjectExplorer Source="{Binding SelectedReplay}"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0"  BorderBrush="Orange" BorderThickness="1.5" Padding="2">
+            <cc:TeamView Team="{Binding SelectedReplay.TeamLocal}" />
+            </Border>
+            <Border Grid.Row="1"  BorderBrush="Orange" BorderThickness="1.5" Padding="2">
+                <cc:TeamView Team="{Binding SelectedReplay.TeamVisit}"/>
+            </Border>
+
+        </Grid>
+        <!--<cc:ObjectExplorer Source="{Binding SelectedReplay}"/>-->
     </DockPanel>
    
 </Window>

@@ -46,6 +46,8 @@ namespace BBS.Models
         /// </summary>
         public override SubActionChance Chances { get; }
 
+
+
         private CompleteRollChance GetRollChance(Roll roll, bool canUseReRoll = false, bool canUseSkill = false)
         {
             bool hasTheSkill = roll.PlayerHasTheRightSkill(Player) && canUseSkill;

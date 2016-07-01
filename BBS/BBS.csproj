@@ -151,7 +151,7 @@
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerStats.cs" />
     <Compile Include="Models\Roll.cs" />
-    <Compile Include="Models\RollResult.cs" />
+    <Compile Include="Models\Chance.cs" />
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\SubAction.cs" />
     <Compile Include="Models\Team.cs" />

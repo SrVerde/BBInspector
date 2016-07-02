@@ -27,10 +27,8 @@ namespace BBS.Models
         /// </summary>
         public abstract T Chances { get; }
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
+     
+
     }
 
     public enum ActionType

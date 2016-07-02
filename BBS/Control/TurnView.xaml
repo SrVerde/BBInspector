@@ -4,35 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BBS.Control"
+             xmlns:model="clr-namespace:BBS.Models"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel>
-        <Expander>
-            <Expander.Header>
+    <Expander>
+        <Expander.Header>
+            
                 <TextBlock>
-                <Run Text="Turn:"/>
-                <Run Text="{Binding Number, Mode=OneWay}"/>
-                </TextBlock>
-            </Expander.Header>
-            <TreeView ItemsSource="{Binding Actions}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding SubActions}">
+                    <Run Text="TURN:"/>
+                    <Run Text="{Binding Number, Mode=OneWay}"/>
+            </TextBlock>
+                
+           
+        </Expander.Header>
+    <TreeView ItemsSource="{Binding Actions}" BorderThickness="0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+        <TreeView.Resources>
+            <HierarchicalDataTemplate DataType="{x:Type model:Action}" ItemsSource="{Binding SubActions}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Player.Name}" FontSize="15" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Padding="2,0" />
-                            <TextBlock Text="{Binding Type}" Grid.Column="1" Grid.Row="0" Padding="2,0"  TextAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Chances.Success}" Grid.Column="2" Grid.Row="0" Padding="2,0" TextAlignment="Center" VerticalAlignment="Center" />
-                    </Grid>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            </TreeView>
-        </Expander>
-    </DockPanel>
+
+                     <TextBlock Text="{Binding Player.Name}" FontWeight="Bold"  FontSize="12" VerticalAlignment="Center" Grid.Column="0"  Padding="2"/>
+                    <TextBlock Text="{Binding Type}" VerticalAlignment="Center" Grid.Column="1" Padding="2"/>
+                   </Grid>
+            </HierarchicalDataTemplate>
+            
+            <HierarchicalDataTemplate DataType="{x:Type model:SubAction}" ItemsSource="{Binding Rolls}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Type}" VerticalAlignment="Center" />
+                </StackPanel>
+            </HierarchicalDataTemplate>
+
+            <DataTemplate DataType="{x:Type model:Roll}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Type}" VerticalAlignment="Center" />
+                </StackPanel>
+            </DataTemplate>
+        </TreeView.Resources>
+    </TreeView>
+    </Expander>
 </UserControl>

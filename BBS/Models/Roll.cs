@@ -57,7 +57,10 @@ namespace BBS.Models
             //  If the rolled dice text is null, we can end now
             //
             if (diceRolls == null)
+            {
+                isNoRoll = true;
                 return;
+            }
 
             Regex expression;
             Match match;
@@ -183,7 +186,7 @@ namespace BBS.Models
         /// <summary>
         /// Some roll types are lited as rolls, but they are not
         /// </summary>
-        private bool isNoRoll = false;
+        internal bool isNoRoll = false;
         /// <summary>
         /// Combinations in 2D6 to roll equal or higher than the array index
         /// </summary>

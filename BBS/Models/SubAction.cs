@@ -119,5 +119,10 @@ namespace BBS.Models
         {
             return String.Format("{0} - {1}", Type.ToString(), GetRollString());
         }
+
+        public string Description
+        {
+            get { return ToString(); }
+        }
     }
 }

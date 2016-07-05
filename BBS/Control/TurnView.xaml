@@ -33,7 +33,7 @@
             
             <HierarchicalDataTemplate DataType="{x:Type model:SubAction}" ItemsSource="{Binding Rolls}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Type}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Description}" VerticalAlignment="Center" />
                 </StackPanel>
             </HierarchicalDataTemplate>
 

@@ -29,6 +29,8 @@ namespace BBS.Models
 
         private ActionType CalculateActionType()
         {
+            ClearSubActions();
+
             ActionType current = ActionType.Unknown;
 
             var sb = SubActions.Find(sa => sa.Type == ActionType.Blitz);
@@ -62,6 +64,7 @@ namespace BBS.Models
         
         public override string ToString()
         {
+            
             return String.Format("{0} - {1}", Player.Name, Type);
         }
 
@@ -83,6 +86,21 @@ namespace BBS.Models
                 sa.AddRoll(roll);
             }            
             this.SubActions.Add(sa);
+        }
+
+
+        private void ClearSubActions()
+        {
+            
+            for(int i =SubActions.Count-1; i >= 0; i--)
+            {
+                var sa = SubActions[i];
+                if (sa.Rolls.Count == 1 && sa.Rolls[0].isNoRoll)
+                {
+                    if (SubActions.Count > 1)
+                        SubActions.RemoveAt(i);
+                }
+            }
         }
 
 
